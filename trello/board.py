@@ -157,7 +157,7 @@ class Board(object):
         json_obj = sorted(json_obj, key=lambda checklist: checklist['pos'])
         for cl in json_obj:
             checklists.append(Checklist(self.client, cl.get('checkItemStates',[]), cl,
-                                        trello_card=self.id))
+                                        trello_card=cl.get('idCard')))
         return checklists
 
     def add_list(self, name):

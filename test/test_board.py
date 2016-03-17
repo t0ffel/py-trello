@@ -181,6 +181,7 @@ class TrelloBoardTestCase(unittest.TestCase):
         new_chklists = self._board.get_checklists()
         test_chk = new_chklists[0]
         self.assertEqual(test_chk.name, "Test Checklist")
+        self.assertEqual(test_chk.trello_card, card.id)
         self.assertEqual(len(new_chklists), 1)
         i1 = test_chk.items[0]
         i2 = test_chk.items[1]
