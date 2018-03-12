@@ -8,6 +8,7 @@ from trello.compat import force_str
 from trello.trellolist import List
 from trello.label import Label
 from trello.checklist import Checklist
+from trello.customfield import CustomField
 from dateutil import parser as dateparser
 
 
@@ -153,6 +154,35 @@ class Board(TrelloBase):
 				'/boards/' + self.id + '/lists',
 				query_params={'cards': 'none', 'filter': list_filter})
 		return [List.from_json(board=self, json_obj=obj) for obj in json_obj]
+
+	def get_custom_fields(self):
+		"""Get Custom Fields
+
+		:rtype: list of CustomField
+		"""
+		# error checking
+		json_obj = self.client.fetch_json(
+				'/boards/' + self.id + '/customFields')
+		return [CustomField.from_json(board=self, json_obj=obj) for obj in json_obj]
+
+        def add_custom_field(self, name, field_type, pos="bottom", cf_options=[]):
+                """Add custom field to the board
+
+                :name: name of the custom field
+                :field_type: type of the custom field
+                :cf_options: list of options to populate custom field
+                """
+                body = { 'idModel': self.id,
+                         'modelType': 'board',
+                         'name': name,
+                         'options': cf_options,
+                         'pos': pos,
+                         'type': field_type }
+		obj = self.client.fetch_json(
+				'/customFields',
+				http_method='POST',
+				post_args=body)
+                return CustomField.from_json(board=self, json_obj=obj)
 
 	def list_lists(self, list_filter='all'):
 		"""Get lists from filter
