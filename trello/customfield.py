@@ -55,7 +55,7 @@ class CustomField(TrelloBase):
                  'value': {
                      'text': text }}
         obj = self.client.fetch_json(
-				'/customField',
+				'%s/customField' % self.id,
 				http_method='POST',
 				post_args=body)
 
